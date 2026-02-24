@@ -14,7 +14,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List questions = [];
   int currentIndex = 0;
   int score = 0;
-  int timer = 60;
+  int timer = 180;
   Timer? countdown;
   String? selected;
 
@@ -53,7 +53,7 @@ class _QuizScreenState extends State<QuizScreen> {
       setState(() {
         currentIndex++;
         selected = null;
-        timer = 60;
+        timer = 180;
       });
       startTimer();
     } else {
