@@ -3,16 +3,52 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+Future<void> saveScore(int score) async {
+  final prefs = await SharedPreferences.getInstance();
+  List<String> history = prefs.getStringList("score_history") ?? [];
+
+  history.add(jsonEncode({
+    "score": score,
+    "date": DateTime.now().toString()
+  }));
+
+  await prefs.setStringList("score_history", history);
+}
+
 class ResultScreen extends StatelessWidget {
   final List<Map<String, dynamic>> userAnswers;
 
   const ResultScreen({super.key, required this.userAnswers});
 
+SizedBox(
+  height: 200,
+  child: BarChart(
+    BarChartData(
+      titlesData: FlTitlesData(show: true),
+      barGroups: categoryTotal.keys.toList().asMap().entries.map((entry) {
+        int index = entry.key;
+        String category = entry.value;
+        int correct = categoryCorrect[category] ?? 0;
+
+        return BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              toY: correct.toDouble(),
+            )
+          ],
+        );
+      }).toList(),
+    ),
+  ),
+),
+  
   @override
   Widget build(BuildContext context) {
     int correctCount = userAnswers
         .where((item) => item["selected"] == item["correct"])
         .length;
+    saveScore(correctCount);
 
     Map<String, int> categoryCorrect = {};
     Map<String, int> categoryTotal = {};
