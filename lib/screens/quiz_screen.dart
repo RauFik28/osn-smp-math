@@ -80,7 +80,6 @@ class _QuizScreenState extends State<QuizScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
             ...(q["options"] as List).map((opt) {
               return RadioListTile<String>(
                 title: Text(opt),
@@ -93,9 +92,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 },
               );
             }).toList(),
-
             const Spacer(),
-
             ElevatedButton(
               onPressed: nextQuestion,
               child: const Text("Selanjutnya"),
