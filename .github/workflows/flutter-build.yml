@@ -25,7 +25,7 @@ jobs:
 
       - name: Change App Name to Think Math
         run: |
-          sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">Think Math<\/string>/g' android/app/src/main/res/values/strings.xml
+          sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">think_math<\/string>/g' android/app/src/main/res/values/strings.xml
 
       - name: Commit Changes
         run: |
