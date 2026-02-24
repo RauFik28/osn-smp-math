@@ -1,6 +1,9 @@
-name: Generate Full Flutter Project
+name: Build APK
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -14,22 +17,11 @@ jobs:
         with:
           flutter-version: '3.19.0'
 
-      - name: Create Flutter Project
-        run: flutter create .
-
       - name: Get dependencies
         run: flutter pub get
-        
+
       - name: Generate launcher icons
         run: flutter pub run flutter_launcher_icons || true
-
-      - name: Change App Name to Think Math
-        run: |
-          if [ -f android/app/src/main/res/values/strings.xml ]; then
-            sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">Think Math<\/string>/g' android/app/src/main/res/values/strings.xml
-          else
-            echo "strings.xml not found, skipping"
-          fi
 
       - name: Build APK
         run: flutter build apk --release
@@ -39,11 +31,3 @@ jobs:
         with:
           name: think-math-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
-      - name: Commit Changes
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "github-actions"
-          git add .
-          git commit -m "Generate full flutter structure with Think Math name" || echo "No changes to commit"
-          git push
