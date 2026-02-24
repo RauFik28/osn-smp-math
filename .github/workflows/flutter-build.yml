@@ -14,11 +14,17 @@ jobs:
         with:
           flutter-version: '3.19.0'
 
-      - run: flutter create .
+      - name: Create Flutter Project
+        run: flutter create .
 
-      - run: |
+      - name: Change App Name to Think Math
+        run: |
+          sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">Think Math<\/string>/g' android/app/src/main/res/values/strings.xml
+
+      - name: Commit Changes
+        run: |
           git config --global user.email "action@github.com"
           git config --global user.name "github-actions"
           git add .
-          git commit -m "Generate full flutter structure"
+          git commit -m "Generate full flutter structure with Think Math name"
           git push
