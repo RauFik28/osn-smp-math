@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
@@ -10,7 +9,9 @@ class QuestionService {
       return _cachedQuestions!;
     }
 
-    final data = await rootBundle.loadString('assets/assets_questions.json');
+    final data =
+        await rootBundle.loadString('assets/assets_questions.json');
+
     _cachedQuestions = json.decode(data);
     return _cachedQuestions!;
   }
