@@ -1,25 +1,21 @@
 import 'dart:convert';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/result_screen.dart';
+import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
+  const QuizScreen({super.key});
+
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-
-  List<Map<String, dynamic>> questions = [];
-  List<Map<String, dynamic>> userAnswers = [];
-
+  List<dynamic> questions = [];
   int currentIndex = 0;
   int score = 0;
-  int timer = 180;
-
-  Timer? countdown;
   String? selected;
+  List<Map<String, dynamic>> userAnswers = [];
 
   @override
   void initState() {
@@ -28,156 +24,101 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<void> loadQuestions() async {
-    final data = await rootBundle.loadString('assets_questions.json');
-
-    List all = json.decode(data);
-
-    all.shuffle(); // FIX: sebelumnya question.shuffle()
+    final data =
+        await rootBundle.loadString('assets/assets_questions.json');
+    final List<dynamic> decoded = json.decode(data);
 
     setState(() {
-      questions = List<Map<String, dynamic>>.from(all.take(20));
-    });
-
-    startTimer();
-  }
-
-  void startTimer() {
-    countdown?.cancel();
-
-    countdown = Timer.periodic(Duration(seconds: 1), (t) {
-      if (timer == 0) {
-        nextQuestion();
-      } else {
-        setState(() {
-          timer--;
-        });
-      }
+      questions = decoded;
     });
   }
 
   void nextQuestion() {
+    if (selected == null) return;
 
-    countdown?.cancel();
+    final currentQuestion = questions[currentIndex];
 
-    // simpan jawaban user
+    // Simpan jawaban user
     userAnswers.add({
-      "question": questions[currentIndex]["soal"],
-      "selected": selected ?? "",
-      "correct": questions[currentIndex]["jawaban"]
+      "question": currentQuestion["question"],
+      "selected": selected,
+      "correct": currentQuestion["answer"],
+      "category": currentQuestion["category"],
     });
 
-    if (selected == questions[currentIndex]['jawaban']) {
+    // Hitung skor
+    if (selected == currentQuestion["answer"]) {
       score++;
     }
 
     if (currentIndex < questions.length - 1) {
-
       setState(() {
         currentIndex++;
         selected = null;
-        timer = 180;
       });
-
-      startTimer();
-
     } else {
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultScreen(
+          builder: (_) => ResultScreen(
             userAnswers: userAnswers,
             score: score,
           ),
         ),
       );
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (questions.isEmpty) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    var q = questions[currentIndex];
+    final q = questions[currentIndex];
 
     return Scaffold(
-
       appBar: AppBar(
-        title: Text("Soal ${currentIndex + 1}/20"),
+        title: Text("Soal ${currentIndex + 1}/${questions.length}"),
       ),
-
       body: Padding(
-
-        padding: EdgeInsets.all(16),
-
+        padding: const EdgeInsets.all(16),
         child: Column(
-
-          crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
-
             Text(
-              "Waktu: $timer detik",
-              style: TextStyle(
+              q["question"],
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                fontSize: 16
               ),
             ),
+            const SizedBox(height: 20),
 
-            SizedBox(height: 16),
-
-            Text(
-              q['soal'],
-              style: TextStyle(fontSize: 18),
-            ),
-
-            SizedBox(height: 16),
-
-            ...['A','B','C','D','E'].map((opt) {
-
+            // List opsi
+            ...(q["options"] as List).map((opt) {
               return RadioListTile<String>(
-
-                title: Text(q['opsi$opt'] ?? ""),
-
+                title: Text(opt),
                 value: opt,
-
                 groupValue: selected,
-
                 onChanged: (val) {
                   setState(() {
                     selected = val;
                   });
                 },
-
               );
-
             }).toList(),
 
-            SizedBox(height: 20),
+            const Spacer(),
 
             ElevatedButton(
               onPressed: nextQuestion,
-              child: Text("Selanjutnya"),
-            )
-
+              child: const Text("Selanjutnya"),
+            ),
           ],
         ),
       ),
     );
   }
-
-  @override
-  void dispose() {
-    countdown?.cancel();
-    super.dispose();
-  }
-
 }
