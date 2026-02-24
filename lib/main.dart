@@ -1,13 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(OSNApp());
+  runApp(const OSNApp());
 }
 
 class OSNApp extends StatelessWidget {
+  const OSNApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +19,7 @@ class OSNApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorSchemeSeed: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
