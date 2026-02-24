@@ -1,0 +1,20 @@
+
+name: osn_smp_math
+description: Aplikasi Offline Latihan OSN SMP Matematika
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  google_fonts: ^6.1.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets_questions.json
