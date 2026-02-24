@@ -1,38 +1,24 @@
-name: Build Flutter APK
+name: Generate Full Flutter Project
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
 
-      - name: Create Fresh Flutter Project
-        run: |
-          flutter create app
-          cp -r lib app/
-          cp pubspec.yaml app/
-          cp assets_questions.json app/
+      - run: flutter create .
 
-      - name: Build APK
-        run: |
-          cd app
-          flutter pub get
-          flutter build apk --release
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+      - run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
+          git add .
+          git commit -m "Generate full flutter structure"
+          git push
