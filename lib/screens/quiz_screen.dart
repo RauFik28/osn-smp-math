@@ -1,17 +1,20 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final List<dynamic> questions;
+
+  const QuizScreen({
+    super.key,
+    required this.questions,
+  });
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  List<dynamic> questions = [];
+  late List<dynamic> questions;
   int currentIndex = 0;
   int score = 0;
   String? selected;
@@ -20,17 +23,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    loadQuestions();
-  }
-
-  Future<void> loadQuestions() async {
-    final data =
-        await rootBundle.loadString('assets/assets_questions.json');
-    final List<dynamic> decoded = json.decode(data);
-
-    setState(() {
-      questions = decoded;
-    });
+    questions = widget.questions;
   }
 
   void nextQuestion() {
@@ -38,7 +31,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
     final currentQuestion = questions[currentIndex];
 
-    // Simpan jawaban user
     userAnswers.add({
       "question": currentQuestion["question"],
       "selected": selected,
@@ -46,7 +38,6 @@ class _QuizScreenState extends State<QuizScreen> {
       "category": currentQuestion["category"],
     });
 
-    // Hitung skor
     if (selected == currentQuestion["answer"]) {
       score++;
     }
@@ -71,12 +62,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (questions.isEmpty) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     final q = questions[currentIndex];
 
     return Scaffold(
@@ -96,7 +81,6 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
             const SizedBox(height: 20),
 
-            // List opsi
             ...(q["options"] as List).map((opt) {
               return RadioListTile<String>(
                 title: Text(opt),
