@@ -27,9 +27,9 @@ class _QuizScreenState extends State<QuizScreen> {
   void loadQuestions() async {
     final data = await rootBundle.loadString('assets_questions.json');
     List all = json.decode(data);
-    all.shuffle();
+    question.shuffle();
     setState(() {
-      questions = all.take(20).toList();
+      questions = questions.take(20).toList();
     });
     startTimer();
   }
