@@ -6,7 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("OSN SMP Matematika 2025-2026")),
+      appBar: AppBar(title: Text("Think Math")),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
