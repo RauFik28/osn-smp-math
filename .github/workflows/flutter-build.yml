@@ -24,8 +24,11 @@ jobs:
         run: flutter pub run flutter_launcher_icons
 
       - name: Change App Name to Think Math
+        working-directory: think_math
         run: |
-          sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">think_math<\/string>/g' android/app/src/main/res/values/strings.xml
+          if [ -f android/app/src/main/res/values/strings.xml ]; then
+          sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">Think Math<\/string>/g' android/app/src/main/res/values/strings.xml
+          fi
 
       - name: Commit Changes
         run: |
