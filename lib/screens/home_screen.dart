@@ -5,7 +5,7 @@ import 'history_screen.dart';
 
 Navigator.push(
   context,
-  MaterialPageRoute(builder: (context) => const HistoryScreen()),
+  MaterialPageRoute(builder: (context) => HistoryScreen()),
 );
 
 class HomeScreen extends StatelessWidget {
