@@ -20,7 +20,21 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HistoryScreen(),
+                  onPressed: () async {
+                    final questions = await QuestionService.getQuestions();
+                    
+                    questions.shuffle();
+                    final selectedQuestions = questions.take(20).toList();
+                    
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(
+                          questions: selectedQuestions,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               );
 
