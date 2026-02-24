@@ -7,6 +7,20 @@ import 'package:flutter/services.dart';
 
 List<Map<String, dynamic>> userAnswers = [];
 
+userAnswers.add({
+  "question": questions[currentIndex]["question"],
+  "category": questions[currentIndex]["category"],
+  "selected": selectedAnswer,
+  "correct": questions[currentIndex]["answer"]
+});
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => ResultScreen(userAnswers: userAnswers),
+  ),
+);
+
 class QuizScreen extends StatefulWidget {
   @override
   _QuizScreenState createState() => _QuizScreenState();
