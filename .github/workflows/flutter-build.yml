@@ -17,6 +17,12 @@ jobs:
       - name: Create Flutter Project
         run: flutter create .
 
+      - name: Get dependencies
+        run: flutter pub get
+        
+      - name: Generate launcher icons
+        run: flutter pub run flutter_launcher_icons
+
       - name: Change App Name to Think Math
         run: |
           sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">Think Math<\/string>/g' android/app/src/main/res/values/strings.xml
