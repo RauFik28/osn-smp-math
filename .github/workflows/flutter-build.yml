@@ -17,6 +17,13 @@ jobs:
         with:
           flutter-version: '3.19.0'
 
+      # 🔥 Buat struktur android/ otomatis jika belum ada
+      - name: Create Flutter structure if missing
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create .
+          fi
+
       - name: Get dependencies
         run: flutter pub get
 
