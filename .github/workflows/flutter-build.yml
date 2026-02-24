@@ -23,6 +23,7 @@ jobs:
           flutter create app
           cp -r lib app/
           cp pubspec.yaml app/
+          cp assets_questions.json app/
 
       - name: Build APK
         run: |
