@@ -1,6 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'quiz_screen.dart';
+import 'history_screen.dart';
+
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const HistoryScreen()),
+);
 
 class HomeScreen extends StatelessWidget {
   @override
