@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'result_screen.dart';
+import 'screens/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   @override
